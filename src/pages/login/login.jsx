@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import './login.less';
 import logo from './images/logo.png';
-import { Form, Icon, Input, Button } from 'antd'; 
-/**
+import { Form, Icon, Input, Button, message} from 'antd'; 
+import {reqLogin} from '../../api';
+import memoryUtils from '../../utils/memoryUtils';
+import {Redirect} from 'react-router-dom';
+import storageUtils from '../../utils/storageUtils';
+/*   
  * 登陆的路由组件
  */
 class Login extends Component {
@@ -17,9 +21,25 @@ class Login extends Component {
         const form = this.props.form;
 
         //对所有表单数据进行校验
-        form.validateFields((err, values) => {
+        form.validateFields(async (err, values) => {
             if(!err){
-                console.log('验证通过',values)
+                const {username,password} = values;
+                let res = await reqLogin(username,password);
+                if(res.code===0){
+                    message.success('登录成功',1)
+
+                    //用户信息
+                    const user = res.data;
+                    memoryUtils.user = user;
+                    storageUtils.saveUser(user);
+
+                    //页面跳转
+                    this.props.history.push('/admin');
+                }else{
+                    message.error(res.msg)
+                }
+                    
+                
             }else{
                 console.log('验证失败',err)
             }
@@ -33,8 +53,8 @@ class Login extends Component {
         let pattern = /^[a-zA-Z0-9_]+$/;
         if(!value){
             callback('密码不能为空!');
-        }else if(value.length<4){
-            callback('密码长度不能小于4位')
+        }else if(value.length<3){
+            callback('密码长度不能小于3位')
         }else if(value.length>12){
             callback('密码长度不能大于12位')
         }else if(!pattern.test(value)){
@@ -45,6 +65,10 @@ class Login extends Component {
     }
 
     render() {
+        const user = memoryUtils.user;
+        if(user && user._id){
+            return <Redirect to='/admin' />
+        }
         const { getFieldDecorator } = this.props.form; 
         return (
             <div className="login">
