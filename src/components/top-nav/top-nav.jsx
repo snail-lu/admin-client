@@ -5,6 +5,7 @@ import {formateDate} from '../../utils/dateUtils';
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 import menuList from '../../config/menu_config';
+import LinkButton from '../link-button/link-button';
 import './top-nav.less';
 import {Modal} from 'antd';
 
@@ -95,7 +96,7 @@ class TopNav extends Component {
             <div className="top-nav">
                 <div className="top-nav-top">
                     <span>欢迎{username}，</span>
-                    <a onClick={this.logout}>退出</a>
+                    <LinkButton onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className="top-nav-bottom">
                     <div className='top-nav-bottom-l'>{title}</div>
