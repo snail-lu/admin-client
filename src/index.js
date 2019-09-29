@@ -6,7 +6,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import storageUtils from './utils/storageUtils';
-import memotyUtils from './utils/memoryUtils';
 import memoryUtils from './utils/memoryUtils';
 //从localstorage中读取user,放到memory中
 const user = storageUtils.getUser();
