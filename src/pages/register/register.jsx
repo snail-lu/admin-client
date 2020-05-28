@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import './login.less';
+import './register.less';
+import { Form, Icon, Input, Button, message } from 'antd';
 import { reqLogin } from '../../api';
 import memoryUtils from '../../utils/memoryUtils';
+import { Redirect, Link } from 'react-router-dom';
 import storageUtils from '../../utils/storageUtils';
-import { Redirect,Link } from 'react-router-dom';
-import { Form, Icon, Input, Button, message } from 'antd';
 import LoginLayout from '../../components/loginLayout/loginLayout';
 
 /*   
  * 登陆的路由组件
  */
-class Login extends Component {
+class Register extends Component {
     /**
      * 表单数据提交
      */
@@ -74,7 +74,7 @@ class Login extends Component {
         return (
             <LoginLayout>
                 <section className="login-content">
-                    <h2>用户登录</h2>
+                <h2>用户注册</h2>
                     <div>
                         <Form onSubmit={this.handleSubmit} className="login-form">
                             <Form.Item>
@@ -113,14 +113,12 @@ class Login extends Component {
                                     登录
                                 </Button>
                                 <div className="flex flex-h-between">
-                                    <Link to="/forget">忘记密码</Link>
-                                    <Link to="/register">去注册</Link>
-                                    {/* <a className="login-form-forgot" href="#">
+                                    <a className="login-form-forgot" href="">
                                         忘记密码
                                     </a>
                                     <a className="login-form-forgot" href="">
                                         去注册
-                                    </a> */}
+                                    </a>
                                 </div>
                             </Form.Item>
                         </Form>
@@ -132,5 +130,5 @@ class Login extends Component {
 }
 
 
-const LoginForm = Form.create()(Login);
-export default LoginForm;
+const RegisterForm = Form.create()(Register);
+export default RegisterForm;
