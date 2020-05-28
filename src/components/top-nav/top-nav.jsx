@@ -102,7 +102,7 @@ class TopNav extends Component {
                     <div className='top-nav-bottom-l'>{title}</div>
                     <div className='top-nav-bottom-r'>
                         <span>{currentTime}</span>
-                        <img src={dayPictureUrl}/>
+                        <img src={dayPictureUrl} alt="" />
                         <span>{weather}</span>
                     </div>
                 </div>

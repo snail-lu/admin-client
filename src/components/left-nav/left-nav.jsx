@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './left-nav.less';
-import logo from '../../assets/images/logo.png';
-import {Link,withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { Menu, Icon,} from 'antd';
 import menuList from '../../config/menu_config';
@@ -9,6 +8,10 @@ import menuList from '../../config/menu_config';
 const { SubMenu } = Menu;
 
 class LeftNav extends Component {
+    constructor(props){
+        super(props);
+        this.menuNodes = this.getMenuNodes_reduce(menuList);
+    }
     /**
      * 动态生成导航标签
      * map()+递归
@@ -92,18 +95,17 @@ class LeftNav extends Component {
         },[])
     }
 
-    componentWillMount(){
-        this.menuNodes = this.getMenuNodes_reduce(menuList);
-    }
     render() {
-
+        // this.menuNodes = this.getMenuNodes_reduce(menuList);
         //得到当前页面的路由路径
         const path = this.props.location.pathname;
         return (
             <div className="left-nav">
                 <Link to="/admin" className="left-nav-header">
-                    <img src={logo} />
-                    <h1>后台管理</h1>
+                    <Icon type="codepen" style={{ fontSize: '26px', color: 'white' }}/>
+                    {
+                        this.props.collapsed ? null : <h1>后台管理</h1>
+                    }
                 </Link>
                 {/* defaultSelectedKeys可用于根据路由路径选中对应的导航标签 */}
                 <Menu
