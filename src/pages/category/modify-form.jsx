@@ -8,10 +8,6 @@ import {
 const Item = Form.Item;
 
 class ModifyForm extends Component {
-    constructor(props){
-        super(props);
-    }
-
     componentDidMount(){
         //将表单对象传递到父组件中
         this.props.setForm(this.props.form);

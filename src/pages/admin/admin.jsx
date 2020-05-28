@@ -5,7 +5,7 @@ import LeftNav from '../../components/left-nav/left-nav';
 import TopNav from '../../components/top-nav/top-nav';
 import {Layout} from 'antd';
 
-import Home from '../home/home';
+import Home from '../../components/home/home';
 import Category from '../category/category';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
@@ -21,6 +21,14 @@ const {Sider,Content,Footer} = Layout;
  * 后台 管理的路由组件
  */
 class Admin extends Component {
+    state = {
+        collapsed: false
+    }
+
+    onCollapse = collapsed => {
+        this.setState({ collapsed });
+    }
+
     render() {
         const user = memoryUtils.user;
         if(!user || !user._id){
@@ -28,8 +36,8 @@ class Admin extends Component {
         }
         return (
             <Layout style={{height: '100%'}}>
-                <Sider>
-                    <LeftNav />
+                <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+                    <LeftNav collapsed={this.state.collapsed} />
                 </Sider>
                 <Layout>
                     <TopNav />
