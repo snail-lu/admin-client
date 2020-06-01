@@ -1,16 +1,47 @@
 import React, { Component } from 'react';
 import './register.less';
-import { Form, Icon, Input, Button, message } from 'antd';
-import { reqLogin } from '../../api';
+import {
+    Form,
+    Input,
+    Upload,
+    Select,
+    Button,
+    Icon,
+    message
+  } from 'antd';
+import { reqRegister } from '../../api';
 import memoryUtils from '../../utils/memoryUtils';
 import { Redirect, Link } from 'react-router-dom';
 import storageUtils from '../../utils/storageUtils';
 import LoginLayout from '../../components/loginLayout/loginLayout';
 
+const { Option } = Select;
+
 /*   
  * 登陆的路由组件
  */
 class Register extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            confirmDirty: false,
+            autoCompleteResult: [],
+            adminLevel: "0",
+        }
+    }
+
+    handleConfirmBlur = e => {
+        const { value } = e.target;
+        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+    }
+
+    handleChange = (value) => {
+        console.log(`selected ${value}`);
+        this.setState({
+            adminLevel: value
+        })
+    }
+
     /**
      * 表单数据提交
      */
@@ -22,12 +53,13 @@ class Register extends Component {
         const form = this.props.form;
 
         //对所有表单数据进行校验
-        form.validateFields(async (err, values) => {
+        form.validateFieldsAndScroll(async (err, values) => {
             if(!err){
-                const {username,password} = values;
-                let res = await reqLogin(username,password);
+                const { username,password,email } = values;
+                const { adminLevel,avatar } = this.state;
+                let res = await reqRegister(username,password,adminLevel,email,avatar);
                 if(res.code===0){
-                    message.success('登录成功',1)
+                    message.success(res.msg,1)
 
                     //用户信息
                     const user = res.data;
@@ -71,54 +103,84 @@ class Register extends Component {
             return <Redirect to='/' />
         }
         const { getFieldDecorator } = this.props.form; 
+
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 4 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 16 },
+            },
+        };
+
         return (
             <LoginLayout>
-                <section className="login-content">
+                <section className="register-content">
                 <h2>用户注册</h2>
                     <div>
-                        <Form onSubmit={this.handleSubmit} className="login-form">
-                            <Form.Item>
-                                {
-                                    getFieldDecorator('username',{
-                                        rules: [
-                                            { required: true, whitespace:true,message: '用户名不能为空!' },
-                                            { min:4, max: 12, message: '用户名长度4-12位!' },
-                                            {pattern:/^[a-zA-Z0-9_]+$/,message:'用户名只能包含字母，数字，或下划线'}
-                                        ],
-                                    })(
-                                        <Input
-                                            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                            placeholder="用户名"
-                                            />
-                                    )
-                                } 
+                        <Form {...formItemLayout} onSubmit={this.handleSubmit} className="login-form">
+                            <Form.Item label="用户名" hasFeedback>
+                                {getFieldDecorator('username', {
+                                    rules: [{ required: true, message: '请输入用户名!', whitespace: true }],
+                                })(<Input />)}
                             </Form.Item>
-                            <Form.Item>
-                                {
-                                    getFieldDecorator('password',{
-                                        rules: [
-                                            { validator: this.validatePwd},
-                                        ],
-                                    })(
-                                        <Input
-                                            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                            type="password"
-                                            placeholder="密码"
-                                            />
-                                    )
-                                }   
+                            <Form.Item label="密码" hasFeedback>
+                                {getFieldDecorator('password', {
+                                    rules: [
+                                    {
+                                        required: true,
+                                        message: '请输入密码！',
+                                    }
+                                    ],
+                                })(<Input.Password />)}
                             </Form.Item>
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" className="login-form-button">
-                                    登录
+                            <Form.Item label="邮箱" hasFeedback>
+                                {getFieldDecorator('email', {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: '请输入邮箱!',
+                                        },
+                                        {
+                                            type: 'email',
+                                            message: '邮箱格式不正确!'
+                                        }
+                                    ],
+                                })(<Input />)}
+                            </Form.Item>
+                            <Form.Item label="职位权限">
+                                <Select defaultValue={this.state.adminLevel} style={{ width: 120 }} onChange={this.handleChange}>
+                                    <Option value="0">普通员工</Option>
+                                    <Option value="1">初级管理员</Option>
+                                    <Option value="2">中级管理员</Option>
+                                    <Option value="3">高级管理员</Option>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item label="头像">
+                                <Upload>
+                                    <Button>
+                                        <Icon type="upload" /> Upload
+                                    </Button>
+                                </Upload>
+                            </Form.Item>
+                            <Form.Item wrapperCol={{
+                                xs: {
+                                span: 24,
+                                offset: 0,
+                                },
+                                sm: {
+                                span: 10,
+                                offset: 7,
+                                },
+                            }}>
+                                <Button type="primary" block htmlType="submit">
+                                    注册
                                 </Button>
-                                <div className="flex flex-h-between">
-                                    <a className="login-form-forgot" href="">
-                                        忘记密码
-                                    </a>
-                                    <a className="login-form-forgot" href="">
-                                        去注册
-                                    </a>
+                                <div>
+                                    已有账户，
+                                    <Link to="/login">去登录</Link>
                                 </div>
                             </Form.Item>
                         </Form>

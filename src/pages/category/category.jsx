@@ -180,7 +180,7 @@ class Category extends Component {
     const title = parentId === '0'?'一级分类列表':(
       <span>
         <LinkButton onClick={this.showFirstCategory}>一级分类列表</LinkButton>
-        <Icon type='arrow-right' style={{marginRight: 5}}/>
+        <Icon type='right' style={{marginRight: 5}}/>
         <span>{parentName}</span>
       </span>
     )
@@ -194,7 +194,7 @@ class Category extends Component {
                 dataSource={parentId==='0'?categorys:subCategorys} 
                 loading={this.state.loading}
                 columns={this.columns}
-                pagination={{defaultPageSize:4,showQuickJumper:true}}
+                pagination={{defaultPageSize:6,showQuickJumper:true}}
               />
 
               <Modal

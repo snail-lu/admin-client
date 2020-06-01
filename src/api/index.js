@@ -9,6 +9,9 @@ import { message } from "antd";
 //登录
 export const reqLogin = (username,password) => ajax('/login',{username,password},'POST');
 
+//注册
+export const reqRegister = (username,password,adminLevel,email,avatar) => ajax('/register',{username,password,adminLevel,email,avatar},'POST');
+
 //添加分类
 export const reqAddCategory = (categoryName,parentId) => ajax('/category/add',{categoryName,parentId},'POST');
 
