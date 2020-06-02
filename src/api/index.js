@@ -7,10 +7,10 @@ import jsonp from 'jsonp';
 import { message } from "antd";
 
 //登录
-export const reqLogin = (username,password) => ajax('/login',{username,password},'POST');
+export const reqLogin = (username,password) => ajax('/admin/login',{username,password},'POST');
 
 //注册
-export const reqRegister = (username,password,adminLevel,email,avatar) => ajax('/register',{username,password,adminLevel,email,avatar},'POST');
+export const reqRegister = (username,password,adminLevel,email,avatar) => ajax('/admin/register',{username,password,adminLevel,email,avatar},'POST');
 
 //添加分类
 export const reqAddCategory = (categoryName,parentId) => ajax('/category/add',{categoryName,parentId},'POST');
@@ -21,6 +21,14 @@ export const reqCategoryList = (parentId) => ajax('/category/list',{parentId},'P
 //更新分类
 export const reqUpdateCategory = (categoryId,categoryName) => ajax('/category/update',{categoryId,categoryName},'POST');
 
+//获取管理员列表
+export const reqAdminList = () => ajax('/admin/list',{},'POST');
+
+//删除管理员
+export const reqDeleteAdmin = (id) => ajax('/admin/delete',{id},'POST');
+
+//修改管理员信息
+export const reqUpdateAdmin = ({_id,username,email,adminLevel,avatar}) => ajax('/admin/update',{_id,username,email,adminLevel,avatar},'POST');
 
 //获取天气
 export const reqWeather = (city) => {

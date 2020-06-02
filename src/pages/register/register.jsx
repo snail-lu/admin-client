@@ -26,7 +26,7 @@ class Register extends Component {
         this.state = {
             confirmDirty: false,
             autoCompleteResult: [],
-            adminLevel: "0",
+            adminLevel: "1",
         }
     }
 
@@ -152,7 +152,6 @@ class Register extends Component {
                             </Form.Item>
                             <Form.Item label="职位权限">
                                 <Select defaultValue={this.state.adminLevel} style={{ width: 120 }} onChange={this.handleChange}>
-                                    <Option value="0">普通员工</Option>
                                     <Option value="1">初级管理员</Option>
                                     <Option value="2">中级管理员</Option>
                                     <Option value="3">高级管理员</Option>

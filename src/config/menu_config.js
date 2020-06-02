@@ -27,7 +27,7 @@ const menuList = [
         icon: 'user'
     },
     {
-        title: '角色管理',
+        title: '权限管理',
         key: '/role',
         icon: 'team'
     },
