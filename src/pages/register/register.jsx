@@ -11,6 +11,7 @@ import {
   } from 'antd';
 import { reqRegister } from '../../api';
 import memoryUtils from '../../utils/memoryUtils';
+import Utils from '../../utils/index';
 import { Redirect, Link } from 'react-router-dom';
 import storageUtils from '../../utils/storageUtils';
 import LoginLayout from '../../components/loginLayout/loginLayout';
@@ -27,6 +28,7 @@ class Register extends Component {
             confirmDirty: false,
             autoCompleteResult: [],
             adminLevel: "1",
+            avatar: ''
         }
     }
 
@@ -97,6 +99,19 @@ class Register extends Component {
         }
     }
 
+    //上传头像
+    avatarChange = info => {
+        if(info.file.originFileObj){
+            Utils.getBase64(info.file.originFileObj, imageUrl => {
+                this.setState({
+                    avatar: imageUrl
+                })
+            })
+        }
+        
+
+    };
+
     render() {
         const user = memoryUtils.user;
         if(user && user._id){
@@ -115,6 +130,13 @@ class Register extends Component {
             },
         };
 
+        const { avatar } = this.state;
+        const uploadButton = (
+            <div>
+              <Icon type='plus' />
+              <div className="ant-upload-text">Upload</div>
+            </div>
+        );
         return (
             <LoginLayout>
                 <section className="register-content">
@@ -158,10 +180,16 @@ class Register extends Component {
                                 </Select>
                             </Form.Item>
                             <Form.Item label="头像">
-                                <Upload>
-                                    <Button>
-                                        <Icon type="upload" /> Upload
-                                    </Button>
+                                <Upload
+                                    name="avatar"
+                                    listType="picture-card"
+                                    className="avatar-uploader"
+                                    showUploadList={false}
+                                    beforeUpload={Utils.beforeUpload}
+                                    onChange={this.avatarChange}
+                                    customRequest={()=>{}}
+                                >
+                                    {avatar ? <img src={avatar} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                                 </Upload>
                             </Form.Item>
                             <Form.Item wrapperCol={{

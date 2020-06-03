@@ -51,6 +51,8 @@ class Admin extends Component {
                             <Route path="/product" component={Product}></Route>
                             <Route path="/role" component={Role}></Route>
                             <Route path="/user" component={User}></Route>  
+                            <Route path="/menus" component={Category}></Route>  
+                            <Route path="/activities" component={User}></Route>  
                             <Redirect to="/home" />                     
                         </Switch>
                     </Content>

@@ -19,7 +19,7 @@ class Role extends Component {
         {
           title: '头像',
           dataIndex: 'avatar',
-          render: text => <Avatar icon='user'/>
+          render: avatar => <Avatar icon='user' src={avatar}/>
         },
         {
           title: '职级权限',
@@ -77,20 +77,13 @@ class Role extends Component {
      * 修改管理员信息
      */
     modifyAdminInfo = (admin) => {
-        // console.log(admin)
-        // console.log(memoryUtils.user)
-        if(admin._id === memoryUtils.user._id){
+        if(admin._id===memoryUtils.user._id || parseInt(memoryUtils.user.adminLevel)>parseInt(admin.adminLevel)){
             this.setState({ 
                 modalMode: 'MODIFY',
-                currentAdmin: admin
+                currentAdmin: JSON.parse(JSON.stringify(admin))
             })
-        }else if(parseInt(admin.adminLevel) >= parseInt(memoryUtils.user.adminLevel)){
-            message.warn('您的权限不足');
         }else{
-            this.setState({ 
-                modalMode: 'MODIFY',
-                currentAdmin: admin
-            })
+            message.warn('您的权限不足');
         }
     }
 

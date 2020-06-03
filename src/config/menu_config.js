@@ -22,6 +22,16 @@ const menuList = [
         ]
     },
     {
+        title: '活动管理',
+        key: '/activities',
+        icon: 'transaction',
+    },
+    {
+        title: '菜单管理',
+        key: '/menus',
+        icon: 'table',
+    },
+    {
         title: '用户管理',
         key: '/user',
         icon: 'user'

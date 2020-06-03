@@ -7,7 +7,7 @@ import storageUtils from '../../utils/storageUtils';
 import menuList from '../../config/menu_config';
 import LinkButton from '../link-button/link-button';
 import './top-nav.less';
-import {Modal} from 'antd';
+import { Modal, Avatar } from 'antd';
 
 class TopNav extends Component {
     constructor(props){
@@ -89,13 +89,13 @@ class TopNav extends Component {
 
     render() {
         const {weather,dayPictureUrl,currentTime} = this.state;
-        const username = memoryUtils.user.username;
-
+        const avatar = memoryUtils.user.avatar;
         const title = this.getTitle();
         return (
             <div className="top-nav">
                 <div className="top-nav-top">
-                    <span>欢迎{username}，</span>
+                    {/* <span>欢迎{username}，</span> */}
+                    <Avatar icon='user' src={avatar} />
                     <LinkButton onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className="top-nav-bottom">
