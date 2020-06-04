@@ -1,9 +1,9 @@
 import React,{ Component } from 'react';
 import './App.css';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import Login from './pages/login/login';
-import Register from './pages/register/register';
-import Admin from './pages/admin/admin';
+import Login from './containers/login/login';
+import Register from './containers/register/register';
+import Admin from './containers/admin/admin';
 
 class App extends Component {
   render(){

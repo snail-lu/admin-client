@@ -167,7 +167,7 @@ class Role extends Component {
         const { adminList, modalMode,currentAdmin } = this.state;
         return (
             <Card title={title}>
-                <Table columns={this.columns} dataSource={adminList} bordered rowKey={(record=>record._id)} />
+                <Table columns={this.columns} dataSource={adminList} bordered rowKey={(record=>record._id)} pagination={{pageSize:5}}/>
                 <Modal
                     title="用户权限修改"
                     okText="确认"

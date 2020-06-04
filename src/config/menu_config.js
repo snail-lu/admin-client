@@ -5,9 +5,31 @@ const menuList = [
         icon: 'home',
     },
     {
-        title: '商品',
-        key: '/products',
-        icon: 'shopping',
+        title: '配置管理',
+        key: '/settings',
+        icon: 'tool',
+        children: [
+            {
+                title: '菜单配置',
+                key: '/menus',
+                icon: 'table'
+            },
+            {
+                title: '分类配置',
+                key: '/classification',
+                icon: 'tool'
+            },
+            {
+                title: '活动配置',
+                key: '/activities',
+                icon: 'transaction'
+            }
+        ]
+    },
+    {
+        title: '内容管理',
+        key: 'contents',
+        icon: 'tool',
         children: [
             {
                 title: '商品管理',
@@ -15,49 +37,46 @@ const menuList = [
                 icon: 'tool'
             },
             {
-                title: '商品分类',
-                key: '/category',
-                icon: 'bars'
+                title: '评论管理',
+                key: '/comment',
+                icon: 'tool'
             }
         ]
     },
     {
-        title: '活动管理',
-        key: '/activities',
-        icon: 'transaction',
-    },
-    {
-        title: '菜单管理',
-        key: '/menus',
-        icon: 'table',
-    },
-    {
         title: '用户管理',
-        key: '/user',
-        icon: 'user'
+        key: 'users',
+        icon: 'user',
+        children: [
+            {
+                title: '商城用户管理',
+                key: '/user',
+                icon: 'user'
+            },
+            {
+                title: '后台用户管理',
+                key: '/role',
+                icon: 'team'
+            }
+        ]
     },
     {
-        title: '权限管理',
-        key: '/role',
-        icon: 'team'
-    },
-    {
-        title: '图表图案',
+        title: '报表数据',
         key: '/charts',
         icon: 'area-chart',
         children: [
             {
-                title: '柱形图',
+                title: '商品数据报表',
                 key: '/bar',
                 icon: 'bar-chart'
             },
             {
-                title: '折线图',
+                title: '用户数据报表',
                 key: '/line',
                 icon: 'line-chart'
             },
             {
-                title: '饼图',
+                title: '销售数据报表',
                 key: '/pie',
                 icon: 'pie-chart'
             }

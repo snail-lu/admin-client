@@ -102,9 +102,9 @@ class LeftNav extends Component {
         return (
             <div className="left-nav">
                 <Link to="/admin" className="left-nav-header">
-                    <Icon type="codepen" style={{ fontSize: '26px', color: 'white' }}/>
+                    <Icon type="desktop" style={{ fontSize: '26px', color: 'white' }}/>
                     {
-                        this.props.collapsed ? null : <h1>后台管理</h1>
+                        this.props.collapsed ? null : <h1 style={{ marginLeft: '10px'}}>管理后台</h1>
                     }
                 </Link>
                 {/* defaultSelectedKeys可用于根据路由路径选中对应的导航标签 */}

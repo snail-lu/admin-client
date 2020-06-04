@@ -99,7 +99,7 @@ class TopNav extends Component {
                     <LinkButton onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className="top-nav-bottom">
-                    <div className='top-nav-bottom-l'>{title}</div>
+                    <div className='top-nav-bottom-l'><h3>{title}</h3></div>
                     <div className='top-nav-bottom-r'>
                         <span>{currentTime}</span>
                         <img src={dayPictureUrl} alt="" />

@@ -6,6 +6,7 @@ import TopNav from '../../components/top-nav/top-nav';
 import {Layout} from 'antd';
 
 import Home from '../../components/home/home';
+import MenuConfig from '../menuConfig/menuConfig';
 import Category from '../category/category';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
@@ -44,15 +45,24 @@ class Admin extends Component {
                     <Content style={{backgroundColor: '#fff',margin: '20px',}}>
                         <Switch>
                             <Route path="/home" component={Home}></Route>
-                            <Route path="/category" component={Category}></Route>
+                            {/* 配置管理 */}
+                            <Route path="/menus" component={MenuConfig}></Route>
+                            <Route path="/classification" component={Category}></Route>
+                            <Route path="/activities" component={User}></Route>    
+
+                            {/* 内容管理 */}
+                            <Route path="/product" component={Product}></Route>
+                            <Route path="/comment" component={Product}></Route>
+
+                            {/* 用户管理 */}
+                            <Route path="/user" component={User}></Route>
+                            <Route path="/role" component={Role}></Route>
+
+                            {/* 报表数据管理 */}
                             <Route path="/bar" component={Bar}></Route>
                             <Route path="/line" component={Line}></Route>
                             <Route path="/pie" component={Pie}></Route>     
-                            <Route path="/product" component={Product}></Route>
-                            <Route path="/role" component={Role}></Route>
-                            <Route path="/user" component={User}></Route>  
-                            <Route path="/menus" component={Category}></Route>  
-                            <Route path="/activities" component={User}></Route>  
+                            
                             <Redirect to="/home" />                     
                         </Switch>
                     </Content>

@@ -7,7 +7,7 @@ const LoginLayout = (props) => {
     return (
         <div className="login">
             <header className='login-header'>
-                <Icon type="codepen" style={{ fontSize: '30px', color: 'white' }} />
+                <Icon type="desktop" style={{ fontSize: '30px', color: 'white' }} />
                 <h1>后台管理系统</h1>
             </header>
             { props.children }
