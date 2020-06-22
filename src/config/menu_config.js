@@ -40,6 +40,11 @@ const menuList = [
                 title: '评论管理',
                 key: '/comment',
                 icon: 'tool'
+            },
+            {
+                title: '推文管理',
+                key: '/articles',
+                icon: 'tool'
             }
         ]
     },
