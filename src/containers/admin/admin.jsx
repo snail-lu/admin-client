@@ -6,7 +6,8 @@ import TopNav from '../../components/top-nav/top-nav';
 import {Layout} from 'antd';
 
 import Home from '../../components/home/home';
-import MenuConfig from '../menuConfig/menuConfig';
+import MenuConfig from '../menuConfig/index';
+import Articles from '../articles/index';
 import Category from '../category/category';
 import Bar from '../charts/bar';
 import Line from '../charts/line';
@@ -36,7 +37,7 @@ class Admin extends Component {
             return <Redirect to='/login' />
         }
         return (
-            <Layout style={{height: '100%'}}>
+            <Layout style={{minHeight: '100%'}}>
                 <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
                     <LeftNav collapsed={this.state.collapsed} />
                 </Sider>
@@ -53,6 +54,7 @@ class Admin extends Component {
                             {/* 内容管理 */}
                             <Route path="/product" component={Product}></Route>
                             <Route path="/comment" component={Product}></Route>
+                            <Route path="/articles" component={Articles}></Route>
 
                             {/* 用户管理 */}
                             <Route path="/user" component={User}></Route>
