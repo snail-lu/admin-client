@@ -50,12 +50,14 @@ class TopNav extends Component {
             if(item.key===path){
                 title = item.title;
             }else if(item.children){
-                let cItem = item.children.find(cItem=>{
-                    return cItem.key===path;
+                let pattern = null;
+                item.children.forEach(cItem=>{
+                    pattern = new RegExp(cItem.key,"g");
+                    if(pattern.test(path)){
+                        title = cItem.title;
+                    }
+                    // return cItem.key==='/menus'
                 })
-                if(cItem){
-                    title = cItem.title;
-                }
             }
         })
         return title;
