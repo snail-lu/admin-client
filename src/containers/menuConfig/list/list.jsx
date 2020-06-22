@@ -1,56 +1,78 @@
 import React, { Component } from 'react';
 import { Card,Button, Icon, Table, message, Modal, Input, Divider } from 'antd';
-import { reqCategoryList, reqUpdateCategory, reqAddCategory } from '../../api/index';
-import LinkButton from '../../components/link-button/link-button';
-import AddForm from './add-form.jsx';
-import ModifyForm from './modify-form.jsx';
+import { reqConfigList, reqUpdateCategory, reqAddCategory } from '../../../api/index';
+import LinkButton from '../../../components/link-button/link-button';
+import AddForm from '../add-form.jsx';
+import ModifyForm from '../modify-form.jsx';
+import { Link } from 'react-router-dom';
+import './list.less';
 
 const { Search } = Input;
-class MenuConfig extends Component {
+class MenuList extends Component {
   columns = [
     {
       title: '配置名称',
       dataIndex: 'configName',
+      width: 100,
+      ellipsis: true,
+      align: 'center'
     },
     {
       title: '配置键',
       dataIndex: 'configKey',
+      width: 100,
+      ellipsis: true,
+      align: 'center'
     },
     {
       title: '配置值',
-      dataIndex: 'configValue'
+      dataIndex: 'configValue',
+      width: 300,
+      ellipsis: true,
+      align: 'center'
     },
     {
-      title: '添加时间',
-      dataIndex: 'addTime'
+      title: '发布时间',
+      dataIndex: 'publishTime',
+      ellipsis: true,
+      align: 'center'
     },
     {
       title: '修改时间',
-      dataIndex: 'modifyTime'
+      dataIndex: 'modifyTime',
+      ellipsis: true,
+      align: 'center'
     },
     {
       title: '最后修改人',
-      dataIndex: 'reviser'
+      dataIndex: 'reviser',
+      align: 'center'
     },
     {
       title: '状态',
-      dataIndex: 'configStatus'
+      dataIndex: 'configStatus',
+      width: 70,
+      align: 'center',
+      render: (status)=>(
+        status?<Icon type="check-circle" /> : <Icon type="exclamation-circle" />
+      )
     },
     {
       title: '操作',
-      width: 300,
-      render: (category)=>(
+      width: 100,
+      align: 'center',
+      render: (config)=>(
         <span>
-          <LinkButton onClick={()=>this.showModifyModal(category)} >
+          <Link to={{pathname:'/menus/edit',state:{id:config._id}}}>
             <Icon type="form" />
-          </LinkButton>
+          </Link>
           <Divider type="vertical" />
-          <LinkButton onClick={()=>this.showSubCategorys(category)}>
+          <LinkButton onClick={()=>this.showSubCategorys(config)}>
             <Icon type="delete" />
           </LinkButton>
         </span>
       )
-    },
+    }
   ];
 
   constructor(props){
@@ -74,7 +96,7 @@ class MenuConfig extends Component {
 
   componentDidMount(){
     let { parentId } = this.state;
-    // this.getCategory(parentId);
+    this.getConfigList(parentId);
   }
 
   componentDidUpdate(){
@@ -82,12 +104,12 @@ class MenuConfig extends Component {
   }
 
   /**
-   * 异步获取分类列表
+   * 获取配置列表
    */
-  getCategory = async (parentId) => {
+  getConfigList = async (parentId) => {
     //发请求前，显示loading
     this.setState({loading:true})
-    const result = await reqCategoryList(parentId);
+    const result = await reqConfigList();
     this.setState({loading:false})
     if(result.code===0){
       let target = parentId==='0'?'categorys':'subCategorys';
@@ -208,9 +230,9 @@ class MenuConfig extends Component {
     const title = (
       <Search placeholder="关键词" onSearch={value => console.log(value)} enterButton style={{ width: 400}}/>
     )
-    const extra = (<Button type="primary" onClick={this.showAddModal}><Icon type='plus'></Icon>添加</Button>);
+    const extra = (<Link to="/menus/add"><Button type="primary"><Icon type='plus'></Icon>添加</Button></Link>);
     return (
-        <div>
+        <div className="menu-config-list">
             <Card title={title} extra={extra}>
               <Table 
                 bordered
@@ -219,19 +241,8 @@ class MenuConfig extends Component {
                 loading={this.state.loading}
                 columns={this.columns}
                 pagination={{defaultPageSize:6,showQuickJumper:true}}
+                style={{fontSize:15}}
               />
-
-              <Modal
-                title="修改分类"
-                cancelText='取消'
-                okText='确定'
-                visible={this.state.showStatus===1}
-                onOk={this.modifyCategory}
-                onCancel={this.handleCancel}
-                destroyOnClose
-              >
-                <ModifyForm category={this.state.currentCategory} setForm={(form)=>{this.setState({form})}}/>
-              </Modal>
               <Modal
                 title="添加分类"
                 cancelText='取消'
@@ -249,5 +260,5 @@ class MenuConfig extends Component {
   }
 }
 
-export default MenuConfig;
+export default MenuList;
 
