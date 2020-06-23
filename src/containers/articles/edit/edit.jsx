@@ -12,7 +12,8 @@ import {
 import { addArticle, reqArticleInfo, saveArticle } from '../../../api/index';
 import RichTextEditor from '../../../components/richTextEditor/richTextEditor';
 import 'braft-editor/dist/index.css';
-import BraftEditor from 'braft-editor'
+import BraftEditor from 'braft-editor';
+import './edit.less';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -219,8 +220,6 @@ class ArticlesEdit extends Component {
                                 className="my-editor"
                                 // controls={controls}
                                 placeholder="请输入正文内容"
-                                controlBarStyle={{border:'1px solid #ccc'}}
-                                contentStyle={{border:'1px solid #ccc'}}
                                 extendControls={extendControls}
                             />
                         )}
