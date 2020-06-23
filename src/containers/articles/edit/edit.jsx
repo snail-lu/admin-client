@@ -11,6 +11,8 @@ import {
 } from 'antd';
 import { addArticle, reqArticleInfo, saveArticle } from '../../../api/index';
 import RichTextEditor from '../../../components/richTextEditor/richTextEditor';
+import 'braft-editor/dist/index.css';
+import BraftEditor from 'braft-editor'
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -34,6 +36,9 @@ class ArticlesEdit extends Component {
                 this.setState({
                     articleInfo: res.data
                 })
+                this.props.form.setFieldsValue({
+                    content: BraftEditor.createEditorState(res.data.content)
+                })
             }
             
         }
@@ -48,15 +53,15 @@ class ArticlesEdit extends Component {
         //对所有表单数据进行校验
         form.validateFieldsAndScroll(async (err, values) => {
             if(!err){
-                const { title,author } = values;
-                const content = this.editorRef.current.getEditorState();
+                const { title, author, content } = values;
+                // const content = this.editorRef.current.getEditorState();
                 let res;
                 if(this.state.mode=='add'){
-                    res = await addArticle(title, author, content);
+                    res = await addArticle(title, author, content.toRAW());
                 }else{
                     let { id } = this.state;
                     const username = memoryUtils.user.username;
-                    res = await saveArticle(id, title, author, content)
+                    res = await saveArticle(id, title, author, content.toRAW())
                 }
                 
                 if(res.code===0){
@@ -74,6 +79,79 @@ class ArticlesEdit extends Component {
             }
         });
     }
+
+    preview = () => {
+
+        if (window.previewWindow) {
+          window.previewWindow.close()
+        }
+    
+        window.previewWindow = window.open()
+        window.previewWindow.document.write(this.buildPreviewHtml())
+        window.previewWindow.document.close()
+    
+      }
+    
+      buildPreviewHtml () {
+        const form = this.props.form;
+        const content = form.getFieldValue('content');
+    
+        return `
+          <!Doctype html>
+          <html>
+            <head>
+              <title>文章预览</title>
+              <style>
+                html,body{
+                  height: 100%;
+                  margin: 0;
+                  padding: 0;
+                  overflow: auto;
+                  background-color: #f1f2f3;
+                }
+                .container{
+                  box-sizing: border-box;
+                  width: 1000px;
+                  max-width: 100%;
+                  min-height: 100%;
+                  margin: 0 auto;
+                  padding: 30px 20px;
+                  overflow: hidden;
+                  background-color: #fff;
+                  border-right: solid 1px #eee;
+                  border-left: solid 1px #eee;
+                }
+                .container img,
+                .container audio,
+                .container video{
+                  max-width: 100%;
+                  height: auto;
+                }
+                .container p{
+                  white-space: pre-wrap;
+                  min-height: 1em;
+                }
+                .container pre{
+                  padding: 15px;
+                  background-color: #f1f1f1;
+                  border-radius: 5px;
+                }
+                .container blockquote{
+                  margin: 0;
+                  padding: 15px;
+                  background-color: #f1f1f1;
+                  border-left: 3px solid #d1d1d1;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">${content.toHTML()}</div>
+            </body>
+          </html>
+        `
+    
+      }
+    
     render() {
         const { getFieldDecorator } = this.props.form;
         const { articleInfo } = this.state;
@@ -84,6 +162,14 @@ class ArticlesEdit extends Component {
             content = articleInfo.content;
         }
         const pageTitle = this.props.location.pathname=="/articles/add"?'新增页':'修改页';
+        const extendControls = [
+            {
+              key: 'custom-button',
+              type: 'button',
+              text: '预览',
+              onClick: this.preview
+            }
+          ]
         return (
             <div>
                 <PageHeader
@@ -109,12 +195,35 @@ class ArticlesEdit extends Component {
                             initialValue: author || ""
                         })(<Input />)}
                     </Form.Item>
-                    <Form.Item label="文章内容">
-                        {/* {getFieldDecorator('content', {
-                            rules: [{ required: true, message: '请输入配置值!', whitespace: true }],
-                            initialValue: articleInfo&&articleInfo.content?articleInfo.content:""
-                        })(<TextArea />)} */}
+                    {/* 使用react-draft-wysiwyg富文本编辑器 */}
+                    {/* <Form.Item label="文章内容">
                         <RichTextEditor ref={this.editorRef} detail={content} />
+                    </Form.Item> */}
+
+                    {/* 使用braft-editor富文本编辑器---这个更好用 */}
+                    <Form.Item label="文章正文">
+                        {getFieldDecorator('content', {
+                            validateTrigger: 'onBlur',
+                            rules: [{
+                                required: true,
+                                validator: (_, value, callback) => {
+                                if (value.isEmpty()) {
+                                    callback('请输入正文内容')
+                                } else {
+                                    callback()
+                                }
+                                }
+                            }],
+                        })(
+                            <BraftEditor
+                                className="my-editor"
+                                // controls={controls}
+                                placeholder="请输入正文内容"
+                                controlBarStyle={{border:'1px solid #ccc'}}
+                                contentStyle={{border:'1px solid #ccc'}}
+                                extendControls={extendControls}
+                            />
+                        )}
                     </Form.Item>
                     {/* <Form.Item label="排序">
                         {getFieldDecorator('configSorts', {

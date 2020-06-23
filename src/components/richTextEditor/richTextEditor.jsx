@@ -16,20 +16,7 @@ export default class RichTextEditor extends Component {
     }
 
   }
-  // componentDidMount(){
-  //   const html = this.props.detail;
-  //   console.log(html,'html')
-  //   if(this.props.detail){
-  //     const contentBlock = htmlToDraft(html);
-  //     if (contentBlock) {
-  //       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-  //       const editorState = EditorState.createWithContent(contentState);
-  //       this.state = {
-  //         editorState,
-  //       };
-  //     }
-  //   }
-  // }
+  //props更新
   componentWillReceiveProps(props){
     if(props.detail){
       const contentBlock = htmlToDraft(props.detail);
@@ -51,6 +38,29 @@ export default class RichTextEditor extends Component {
 
   getEditorState = () => draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
 
+  //图片上传
+  uploadImageCallBack = (file) => {
+    return new Promise(
+      (resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.imgur.com/3/image');
+        xhr.setRequestHeader('Authorization', 'Client-ID XXXXX');
+        const data = new FormData();
+        data.append('image', file);
+        xhr.send(data);
+        xhr.addEventListener('load', () => {
+          const response = JSON.parse(xhr.responseText);
+          debugger;
+          resolve(response);
+        });
+        xhr.addEventListener('error', () => {
+          const error = JSON.parse(xhr.responseText);
+          reject(error);
+        });
+      }
+    );
+  }
+
   render() {
     const { editorState } = this.state;
     return (
@@ -61,6 +71,9 @@ export default class RichTextEditor extends Component {
           editorClassName="rich-text-editor"
           onEditorStateChange={this.onEditorStateChange}
           editorStyle={{minHeight:'200px',lineHeight:'1'}}
+          toolbar={{
+            image: { uploadCallback: this.uploadImageCallBack, alt: { present: true, mandatory: true } }
+          }}
         />
         {/* <textarea
           disabled
