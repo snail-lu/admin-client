@@ -13,11 +13,49 @@ import { addArticle, reqArticleInfo, saveArticle } from '../../../api/index';
 import RichTextEditor from '../../../components/richTextEditor/richTextEditor';
 import 'braft-editor/dist/index.css';
 import BraftEditor from 'braft-editor';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './edit.less';
 
 const { Option } = Select;
 const { TextArea } = Input;
+// 定义rem基准值
+const sizeBase = 23.4375;
 
+// 定义输入转换函数
+function unitImportFn (unit, type, source){
+
+    // type为单位类型，例如font-size等
+    // source为输入来源，可能值为create或paste
+    console.log(type, source)
+
+    // 此函数的返回结果，需要过滤掉单位，只返回数值
+    if (unit.indexOf('rem')) {
+        return parseFloat(unit, 10) * sizeBase
+    } else {
+        return parseFloat(unit, 10)
+    }
+
+}
+
+// 定义输出转换函数
+function unitExportFn(unit, type, target){
+
+    if (type === 'line-height') {
+        // 输出行高时不添加单位
+        return unit
+    }
+
+    // target的值可能是html或者editor，对应输出到html和在编辑器中显示这两个场景
+    if (target === 'html') {
+        // 只在将内容输出为html时才进行转换
+        return unit / sizeBase + 'rem'
+    } else {
+        // 在编辑器中显示时，按px单位展示
+        return unit + 'px'
+    }
+
+}
 class ArticlesEdit extends Component {
     constructor(props){
         super(props);
@@ -27,6 +65,22 @@ class ArticlesEdit extends Component {
         }
         this.editorRef =  React.createRef();
     }
+    modules = {
+        toolbar: [
+          [{ 'header': [1, 2, false] }],
+          ['bold', 'italic', 'underline','strike', 'blockquote'],
+          [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+          ['link', 'image'],
+          ['clean']
+        ],
+    };
+    
+      formats = [
+        'header',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image'
+      ];
     async componentDidMount(){
         let mode = this.props.location.pathname === '/articles/edit' ? 'edit' : 'add';
         let id = this.props.location.state&&this.props.location.state.id ? this.props.location.state.id : ""; 
@@ -37,8 +91,9 @@ class ArticlesEdit extends Component {
                 this.setState({
                     articleInfo: res.data
                 })
+                let content = BraftEditor.createEditorState(res.data.content)
                 this.props.form.setFieldsValue({
-                    content: BraftEditor.createEditorState(res.data.content)
+                    content
                 })
             }
             
@@ -58,11 +113,11 @@ class ArticlesEdit extends Component {
                 // const content = this.editorRef.current.getEditorState();
                 let res;
                 if(this.state.mode=='add'){
-                    res = await addArticle(title, author, content.toRAW());
+                    res = await addArticle(title, author, content.toHTML());
                 }else{
                     let { id } = this.state;
                     const username = memoryUtils.user.username;
-                    res = await saveArticle(id, title, author, content.toRAW())
+                    res = await saveArticle(id, title, author, content.toHTML())
                 }
                 
                 if(res.code===0){
@@ -80,7 +135,7 @@ class ArticlesEdit extends Component {
             }
         });
     }
-
+    //预览按钮
     preview = () => {
 
         if (window.previewWindow) {
@@ -91,9 +146,10 @@ class ArticlesEdit extends Component {
         window.previewWindow.document.write(this.buildPreviewHtml())
         window.previewWindow.document.close()
     
-      }
-    
-      buildPreviewHtml () {
+    }
+      
+    //生成预览html文档
+    buildPreviewHtml () {
         const form = this.props.form;
         const content = form.getFieldValue('content');
     
@@ -150,9 +206,46 @@ class ArticlesEdit extends Component {
             </body>
           </html>
         `
+    }
+
+    // // 定义输入转换函数
+    // unitImportFn = (unit, type, source) => {
+
+    //     // type为单位类型，例如font-size等
+    //     // source为输入来源，可能值为create或paste
+    //     console.log(type, source)
     
-      }
+    //     // 此函数的返回结果，需要过滤掉单位，只返回数值
+    //     if (unit.indexOf('rem')) {
+    //         return parseFloat(unit, 10) * sizeBase
+    //     } else {
+    //         return parseFloat(unit, 10)
+    //     }
     
+    // }
+  
+    // // 定义输出转换函数
+    // unitExportFn = (unit, type, target) => {
+  
+    //     if (type === 'line-height') {
+    //         // 输出行高时不添加单位
+    //         return unit
+    //     }
+    
+    //     // target的值可能是html或者editor，对应输出到html和在编辑器中显示这两个场景
+    //     if (target === 'html') {
+    //         // 只在将内容输出为html时才进行转换
+    //         return unit / sizeBase + 'rem'
+    //     } else {
+    //         // 在编辑器中显示时，按px单位展示
+    //         return unit + 'px'
+    //     }
+    
+    // }
+    onChange = (value) => {
+        console.log(value)
+    }
+        
     render() {
         const { getFieldDecorator } = this.props.form;
         const { articleInfo } = this.state;
@@ -220,9 +313,17 @@ class ArticlesEdit extends Component {
                                 className="my-editor"
                                 // controls={controls}
                                 placeholder="请输入正文内容"
+                                // converts={{ unitImportFn, unitExportFn }}
                                 extendControls={extendControls}
                             />
+                            
                         )}
+                    </Form.Item>
+                    <Form.Item label="文章正文">
+                        <ReactQuill theme="snow"
+                                modules={this.modules}
+                                formats={this.formats}>
+                            </ReactQuill>
                     </Form.Item>
                     {/* <Form.Item label="排序">
                         {getFieldDecorator('configSorts', {
