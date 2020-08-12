@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const { Search } = Input;
 
-class Product extends Component {
+class ActivitySet extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -14,36 +14,52 @@ class Product extends Component {
 
     columns = [
         {
-            title: '商品编码',
-            dataIndex: 'name',
-            key: 'name',
-            render: text => <a>{text}</a>,
+          title: 'Name',
+          dataIndex: 'name',
+          key: 'name',
+          render: text => <a>{text}</a>,
         },
         {
-            title: 'SKU',
-            dataIndex: 'age',
-            key: 'age',
+          title: 'Age',
+          dataIndex: 'age',
+          key: 'age',
         },
         {
-            title: '颜色编码',
-            dataIndex: 'address',
-            key: 'address',
+          title: 'Address',
+          dataIndex: 'address',
+          key: 'address',
         },
         {
-            title: '尺寸编码',
-            dataIndex: 'address',
-            key: 'address',
+          title: 'Tags',
+          key: 'tags',
+          dataIndex: 'tags',
+          render: tags => (
+            <span>
+              {tags.map(tag => {
+                let color = tag.length > 5 ? 'geekblue' : 'green';
+                if (tag === 'loser') {
+                  color = 'volcano';
+                }
+                return (
+                  <Tag color={color} key={tag}>
+                    {tag.toUpperCase()}
+                  </Tag>
+                );
+              })}
+            </span>
+          ),
         },
         {
-            title: '实时库存',
-            dataIndex: 'address',
-            key: 'address',
+          title: 'Action',
+          key: 'action',
+          render: (text, record) => (
+            <span>
+              <a>Invite {record.name}</a>
+              <Divider type="vertical" />
+              <a>Delete</a>
+            </span>
+          ),
         },
-        {
-            title: '冻结库存',
-            dataIndex: 'address',
-            key: 'address',
-        }
       ];
       tableData = [
         {
@@ -73,7 +89,7 @@ class Product extends Component {
             <Search placeholder="关键词" onSearch={value => console.log(value)} enterButton style={{ width: 400}}/>
           )
           const extra = (
-                <div>
+              <div>
                     <Button type="primary"><Icon type='plus'></Icon>添加</Button> 
                     <Button type="primary"><Icon type='delete'></Icon>删除</Button> 
                     <Button type="primary"><Icon type='upload'></Icon>导入</Button> 
@@ -97,4 +113,4 @@ class Product extends Component {
     }
 }
 
-export default Product;
+export default ActivitySet;

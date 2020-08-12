@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import MenuList from './list/list';
 import MenuEdit from './edit/edit';
-export default function MenuConfig(){
+export default function MenuSet(){
     return (
         <Switch>
             <Route path="/menus" exact component={MenuList}></Route>

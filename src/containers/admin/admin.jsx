@@ -6,7 +6,7 @@ import TopNav from '../../components/top-nav/top-nav';
 import {Layout} from 'antd';
 
 import Home from '../../components/home/home';
-import MenuConfig from '../menuConfig/index';
+import MenuSet from '../menuSet/index';
 import Articles from '../articles/index';
 import Category from '../category/category';
 import Bar from '../charts/bar';
@@ -15,6 +15,8 @@ import Pie from '../charts/pie';
 import Product from '../product/product';
 import Role from '../role/role';
 import User from '../user/user';
+import ActivitySet from '../activitySet/index'
+import Comment from '../comment/comment'
 
 const {Sider,Content,Footer} = Layout;
 
@@ -47,13 +49,13 @@ class Admin extends Component {
                         <Switch>
                             <Route path="/home" component={Home}></Route>
                             {/* 配置管理 */}
-                            <Route path="/menus" component={MenuConfig}></Route>
+                            <Route path="/menus" component={MenuSet}></Route>
                             <Route path="/classification" component={Category}></Route>
-                            <Route path="/activities" component={User}></Route>    
+                            <Route path="/activities" component={ActivitySet}></Route>    
 
                             {/* 内容管理 */}
                             <Route path="/product" component={Product}></Route>
-                            <Route path="/comment" component={Product}></Route>
+                            <Route path="/comment" component={Comment}></Route>
                             <Route path="/articles" component={Articles}></Route>
 
                             {/* 用户管理 */}

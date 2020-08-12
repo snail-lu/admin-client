@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Table, Divider, Tag, Card, Input, Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import { Button, Table, Card, Input, Icon } from 'antd';
 
 const { Search } = Input;
 
-class Product extends Component {
+class Comment extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -14,36 +13,41 @@ class Product extends Component {
 
     columns = [
         {
-            title: '商品编码',
+            title: '评论人',
             dataIndex: 'name',
             key: 'name',
             render: text => <a>{text}</a>,
         },
         {
-            title: 'SKU',
+            title: '评论内容',
             dataIndex: 'age',
             key: 'age',
         },
         {
-            title: '颜色编码',
+            title: '商品ID',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: '尺寸编码',
+            title: '商品名称',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: '实时库存',
+            title: '评分',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: '冻结库存',
+            title: '审核状态',
             dataIndex: 'address',
             key: 'address',
-        }
+        },
+        {
+          title: '状态',
+          dataIndex: 'address',
+          key: 'address',
+      }
       ];
       tableData = [
         {
@@ -97,4 +101,4 @@ class Product extends Component {
     }
 }
 
-export default Product;
+export default Comment;
