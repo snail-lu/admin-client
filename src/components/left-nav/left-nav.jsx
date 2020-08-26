@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './left-nav.less';
 import { Link, withRouter } from 'react-router-dom';
 
-import { Menu, Icon,} from 'antd';
+import { Menu, Icon, Row } from 'antd';
 import menuList from '../../config/menu_config';
 
 const { SubMenu } = Menu;
@@ -96,18 +96,17 @@ class LeftNav extends Component {
     }
 
     render() {
-        // this.menuNodes = this.getMenuNodes_reduce(menuList);
         //得到当前页面的路由路径
         const path = this.props.location.pathname;
         return (
             <div className="left-nav">
-                <Link to="/admin" className="left-nav-header">
+                {/* defaultSelectedKeys可用于根据路由路径选中对应的导航标签 */}
+                <Row className="logo" type="flex" justify="space-around" align="middle">
                     <Icon type="desktop" style={{ fontSize: '26px', color: 'white' }}/>
                     {
-                        this.props.collapsed ? null : <h1 style={{ marginLeft: '10px'}}>管理后台</h1>
+                        this.props.collapsed? null : <h1 style={{color: 'white', margin: 0, fontSize: '20px'}}>管理后台</h1>
                     }
-                </Link>
-                {/* defaultSelectedKeys可用于根据路由路径选中对应的导航标签 */}
+                </Row>
                 <Menu
                     selectedKeys={[path]}
                     defaultOpenKeys={[this.openKey]}

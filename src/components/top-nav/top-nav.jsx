@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom';
-import {reqWeather} from '../../services';
-import {formateDate} from '../../utils/dateUtils';
+import { withRouter } from 'react-router-dom';
+import { reqWeather } from '../../services';
+import { formateDate } from '../../utils/dateUtils';
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 import menuList from '../../config/menu_config';
 import LinkButton from '../link-button/link-button';
 import './top-nav.less';
-import { Modal, Avatar } from 'antd';
+import { Modal, Avatar, Divider, Menu, Dropdown, Icon, Row, Col } from 'antd';
 
 class TopNav extends Component {
     constructor(props){
@@ -82,7 +82,7 @@ class TopNav extends Component {
 
     componentDidMount(){
         this.getWeather('上海');
-        this.getDate();
+        // this.getDate();
     }
 
     componentWillUnmount(){
@@ -90,25 +90,31 @@ class TopNav extends Component {
     }
 
     render() {
-        const {weather,dayPictureUrl,currentTime} = this.state;
+        const { weather } = this.state;
         const avatar = memoryUtils.user.avatar;
-        const title = this.getTitle();
+        // const title = this.getTitle();
+        const menu = (
+            <Menu>
+                <Menu.Item key="0">
+                    <span>首页</span>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <span onClick={this.logout}>退出登录</span>
+                </Menu.Item>
+            </Menu>
+        );
         return (
-            <div className="top-nav">
-                <div className="top-nav-top">
-                    {/* <span>欢迎{username}，</span> */}
-                    <Avatar icon='user' src={avatar} />
-                    <LinkButton onClick={this.logout}>退出</LinkButton>
-                </div>
-                <div className="top-nav-bottom">
-                    <div className='top-nav-bottom-l'><h3>{title}</h3></div>
-                    <div className='top-nav-bottom-r'>
-                        <span>{currentTime}</span>
-                        <img src={dayPictureUrl} alt="" />
-                        <span>{weather}</span>
-                    </div>
-                </div>
-            </div>
+                <Row type="flex" justify="end" align="middle">
+                    <span>{weather}</span>
+                    <Divider type="vertical" />
+                    <Dropdown overlay={menu} trigger={['click']}>
+                        <div>
+                            <Avatar icon='user' src={avatar} />
+                            <Icon type="down" />
+                        </div>
+                    </Dropdown>
+                    {/*<LinkButton onClick={this.logout}>退出</LinkButton>*/}
+                </Row>
         );
     }
 }
