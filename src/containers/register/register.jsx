@@ -9,7 +9,7 @@ import {
     Icon,
     message
   } from 'antd';
-import { reqRegister } from '../../api';
+import { reqRegister } from '../../services';
 import memoryUtils from '../../utils/memoryUtils';
 import Utils from '../../utils/index';
 import { Redirect, Link } from 'react-router-dom';

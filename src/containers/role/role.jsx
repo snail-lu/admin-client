@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import memoryUtils from '../../utils/memoryUtils';
 import Utils from '../../utils/index';
-import { reqAdminList, reqDeleteAdmin, reqUpdateAdmin } from '../../api/index'
+import { reqAdminList, reqDeleteAdmin, reqUpdateAdmin } from '../../services/index'
 import { Table, Divider, Avatar, Card, message, Modal } from 'antd';
 import LinkButton from '../../components/link-button/link-button';
 import ModifyForm from './modify-form.jsx';

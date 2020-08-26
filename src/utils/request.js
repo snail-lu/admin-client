@@ -7,7 +7,7 @@ import axios from 'axios';
 import {message} from 'antd';
 
 
-export default function ajax(url,data={},type='GET'){
+export default function request(url, data={}, type='GET'){
     // 3.将异步请求结果使用Promise包装返回
     return new Promise((resolve,reject)=>{
         let promise;

@@ -9,7 +9,7 @@ import {
     Button,
     message,
 } from 'antd';
-import { addConfig, getConfigInfo, saveConfig } from '../../../api/index';
+import { addConfig, getConfigInfo, saveConfig } from '../../../services/index';
 
 const { Option } = Select;
 const { TextArea } = Input;

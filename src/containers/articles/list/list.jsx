@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card,Button, Icon, Table, message, Modal, Input, Divider } from 'antd';
-import { reqArticlesList, reqUpdateCategory, reqAddCategory } from '../../../api/index';
+import { reqArticlesList, reqUpdateCategory, reqAddCategory } from '../../../services/index';
 import LinkButton from '../../../components/link-button/link-button';
 import AddForm from '../edit/edit';
 import { Link } from 'react-router-dom';

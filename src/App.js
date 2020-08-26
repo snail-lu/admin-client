@@ -9,8 +9,7 @@ class App extends Component {
   render(){
     return(
       <BrowserRouter>
-        {/* Switch只匹配一个 */}
-        <Switch> 
+        <Switch>
           <Route path='/login' component={Login}></Route>
           <Route path='/register' component={Register}></Route>
           <Route path='/' component={Admin}></Route>

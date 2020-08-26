@@ -9,7 +9,7 @@ import {
     Button,
     message,
 } from 'antd';
-import { addArticle, reqArticleInfo, saveArticle } from '../../../api/index';
+import { addArticle, reqArticleInfo, saveArticle } from '../../../services/index';
 import RichTextEditor from '../../../components/richTextEditor/richTextEditor';
 import 'braft-editor/dist/index.css';
 import BraftEditor from 'braft-editor';

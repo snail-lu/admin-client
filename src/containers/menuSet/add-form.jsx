@@ -4,7 +4,7 @@ import {
     Select,
     Input
 } from 'antd';
-import { reqCategoryList } from '../../api/index';
+import { reqCategoryList } from '../../services/index';
 
 const Item = Form.Item;
 const Option = Select.Option;

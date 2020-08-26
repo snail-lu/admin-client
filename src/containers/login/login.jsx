@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './login.less';
-import { reqLogin } from '../../api';
+import { reqLogin } from '../../services';
 import memoryUtils from '../../utils/memoryUtils';
 import storageUtils from '../../utils/storageUtils';
 import { Redirect,Link } from 'react-router-dom';

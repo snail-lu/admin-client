@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card,Button, Icon, Table, message, Modal, Input, Divider } from 'antd';
-import { reqConfigList, reqUpdateCategory, reqAddCategory } from '../../../api/index';
+import { reqConfigList, reqUpdateCategory, reqAddCategory } from '../../../services/index';
 import LinkButton from '../../../components/link-button/link-button';
 import AddForm from '../add-form.jsx';
 import ModifyForm from '../modify-form.jsx';
